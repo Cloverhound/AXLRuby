@@ -1,0 +1,4 @@
+pattern,description,partition,routelist,discard,called_transform_mask,called_prefix_digits,calling_transform_mask,external_mask,block_enable,urgent
+5555,test,test,test,,,,,Off,f,f
+5556,test,test,test,,,,,Off,f,f
+5557,test,test,test,,,,,Off,f,f
