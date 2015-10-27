@@ -18,31 +18,19 @@ client = Savon.client(
 
 CSV.foreach(path, headers:true) do |row|
 
-  pattern = row['pattern']
-  description = row['description']
-  partition = row['partition']
-  routelist = row['routelist']
-  discard = row['discard']
-  called_transform_mask = row['called_transform_mask']
-  called_prefix_digits = row['called_prefix_digits']
-  calling_transform_mask = row['calling_transform_mask']
-  external_mask = row['external_mask']
-  block_enable = row['block_enable']
-  urgent = row['urgent']
-
   params = { routePattern: { 
-        pattern: pattern,
+        pattern: row['pattern'],
         usage: 'Translation',
-        description: description,
-        routePartitionName: partition,
-        patternUrgency: urgent,
-        blockEnable: block_enable,
-        useCallingPartyPhoneMask: external_mask,
-        calledPartyTransformationMask: called_transform_mask,
-        callingPartyTransformationMask: calling_transform_mask,
-        digitDiscardInstructionName: discard,
-        prefixDigitsOut: called_prefix_digits,
-        destination: { routeListName: routelist }}}
+        description: row['description'],
+        routePartitionName: row['partition'],
+        patternUrgency: row['urgent'],
+        blockEnable: row['block_enable'],
+        useCallingPartyPhoneMask: row['external_mask'],
+        calledPartyTransformationMask: row['called_transform_mask'],
+        callingPartyTransformationMask: row['calling_transform_mask'],
+        digitDiscardInstructionName: row['discard'],
+        prefixDigitsOut: row['called_prefix_digits'],
+        destination: { routeListName: row['routelist'] }}}
 
   begin
     response = client.call(:add_route_pattern) do 
