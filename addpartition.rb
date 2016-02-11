@@ -3,7 +3,7 @@ require 'csv'
 
 require_relative 'config'
 
-path = 'routepatterns.csv'
+path = 'partition.csv'
 
 client = Savon.client(
       wsdl: "lib/axl/#{VERSION}/AXLAPI.wsdl",
@@ -16,10 +16,9 @@ client = Savon.client(
 
 CSV.foreach(path, headers:true) do |row|
 
-  params = { routePattern: { 
-        pattern: row['pattern'],
-        usage: 'Translation',
-        description: row['description'],
+  params = { routePartition: { 
+        name: row['NAME'],
+        description: 'DESCRIPTION',
         routePartitionName: row['partition'],
         patternUrgency: row['urgent'],
         blockEnable: row['block_enable'],
@@ -32,7 +31,7 @@ CSV.foreach(path, headers:true) do |row|
         destination: { routeListName: row['routelist'] }}}
 
   begin
-    response = client.call(:add_route_pattern) do 
+    response = client.call(:add_route_partition) do 
       message params
     end
   end

@@ -1,0 +1,72 @@
+pattern,description,partition,routelist,discard,called_transform_mask,called_prefix_digits,calling_transform_mask,external_mask,block_enable,urgent,dialplan
+9.@,"USA Services 411,611,etc",US-PSTN-PT,US-LOCAL-RL,,,,,Off,f,f,NANP
+9.1[2-9]XXXXXXXXX,USA Long Distance Route Pattern,US-PSTN-PT,US-LD-RL,,,,,Off,f,f,NULL
+[1-8]XXX,On Net to Nortel PBX,Nortel-PBX-PT,KRC-KST-HOU-Nortel-RL,,,,,Off,f,f,NULL
+9.713XXXXXXX,"Houston,TX-10 Digit Local Dialing",KRC-KST-HOU-Service-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.911,USA Emergency Route Pattern,US-PSTN-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.[2-9]XXXXXX,USA Local Route Pattern,KRC-KST-HOU-Restricted,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.281XXXXXXX,"Houston,TX-10 Digit Local Dialing",KRC-KST-HOU-Service-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.832XXXXXXX,"Houston,TX-10 Digit Local Dialing",KRC-KST-HOU-Service-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.1800XXXXXXX,USA Toll Free Route Pattern,US-PSTN-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.1866XXXXXXX,USA Toll Free Route Pattern,US-PSTN-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.1888XXXXXXX,USA Toll Free Route Pattern,US-PSTN-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.1855XXXXXXX,USA Toll Free Route Pattern,US-PSTN-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+9.011!,USA International Route Pattern,US-PSTN-PT,US-LD-RL,,,,,Off,f,f,NULL
+9.011!#,USA International Route Pattern,US-PSTN-PT,US-LD-RL,,,,,Off,f,f,NULL
+2890,KST Houston Cisco Unity Connection Voicemail Pilot,Cluster-PT,KRC-KST-HOU-Voicemail-RL,,,,,Off,f,f,NULL
+85001X,KST Houston IPC Private Wire T1 - Channels 10 - 19,KRC-KST-HOU-RingDown-OutboundPLAR-PT,KRC-KST-HOU-VOIPGW01-RL,,,,,Off,f,f,NULL
+5172,KRC KST Turret DID - Sean Smith 2nd line,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+9713544.289,"Houston,TX-Meridian Mail Pilot",KRC-KST-HOU-Service-PT,US-LOCAL-RL,,,,,Off,f,f,NULL
+5120,KRC KST Turret DID - Sean Smith,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+7516,KRC KST Turret DID - Jeff McFarland,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5169,KRC KST Turret DID - Daryle Barnhart,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5079,KRC KST Turret DID - Michael DeHaven,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5040,KRC KST Turret DID - Brian Carpani,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+85002[0-4],KST Houston IPC Private Wire T1 - Channels 20 - 24,KRC-KST-HOU-RingDown-OutboundPLAR-PT,KRC-KST-HOU-VOIPGW01-RL,,,,,Off,f,f,NULL
+85000[1-9],KST Houston IPC Private Wire T1 - Channels 1 - 9,KRC-KST-HOU-RingDown-OutboundPLAR-PT,KRC-KST-HOU-VOIPGW01-RL,,,,,Off,f,f,NULL
+5233,KRC KST Turret DID - Gary Pedersen,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5182,KRC KST Turret DID - John Stallcup,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+3888,KRC KST Turret DID - Arian Fouquet,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5882,KRC KST Turret DID - Wes Osbourn,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5052,KRC KST Turret DID - Mark Barta Spectron Line,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+6029,KRC KST Turret DID - Zach Mabry,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+7020,KRC KST Turret DID - John Shakespeare,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+2071,KBS Service Desk,Cluster-PT,US-LD-RL,,913168000000,,,Off,f,f,NULL
+6222,Merrill Lynch DID - Not in Koch DID Range,Cluster-PT,US-LD-RL,,913168000000,,,Off,f,f,NULL
+5188,Transwestern Main #,Cluster-PT,US-LD-RL,,97135485300,,,Off,f,f,NULL
+5236,KRC KST Turret DID - Mark Sanders,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+850101,KST - Standalone Private Wire - Evolution Market,KRC-KST-HOU-RingDown-OutboundPLAR-PT,KRC-KST-HOU-VOIPGW01-RL,,,,,Off,f,f,NULL
+850102,KST - Standalone Private Wire - KFS ENT NY,KRC-KST-HOU-RingDown-OutboundPLAR-PT,KRC-KST-HOU-VOIPGW01-RL,,,,,Off,f,f,NULL
+3977,Nortel PBX Modem,Cluster-PT,KRC-KST-HOU-Nortel-RL,,,,,Off,f,f,NULL
+2892,Meridian Mail,Cluster-PT,KRC-KST-HOU-Nortel-RL,,2890,,,Off,f,f,NULL
+3976,Vzb tech,Cluster-PT,KRC-KST-HOU-Nortel-RL,,,,,Off,f,f,NULL
+3981,Vzb tech,Cluster-PT,KRC-KST-HOU-Nortel-RL,,,,,Off,f,f,NULL
+2222,KBS Service Desk,Cluster-PT,US-LD-RL,,913168000000,,,Off,f,f,NULL
+896,Meridian Mail,Nortel-PBX-PT,KRC-KST-HOU-Nortel-RL,,2890,,,Off,f,f,NULL
+698,Meridian Mail,Nortel-PBX-PT,KRC-KST-HOU-Nortel-RL,,2890,,,Off,f,f,NULL
+9.1[2-9]XXXXXXXXX,"USA Long Distance Route Pattern, non BTN CLID",US-PSTN-OriginalCLID-PT,US-LD-OriginalCLID-RL,,,,,Off,f,f,NULL
+9.281XXXXXXX,"Houston,TX-10 Digit Local Dialing Original CLID",US-PSTN-OriginalCLID-PT,US-Local-OriginalCLID-RL,,,,,Off,f,f,NULL
+9.713XXXXXXX,"Houston,TX-10 Digit Local Dialing Original CLID",US-PSTN-OriginalCLID-PT,US-Local-OriginalCLID-RL,,,,,Off,f,f,NULL
+9.832XXXXXXX,"Houston,TX-10 Digit Local Dialing Original CLID",US-PSTN-OriginalCLID-PT,US-Local-OriginalCLID-RL,,,,,Off,f,f,NULL
+5142,KRC KST Turret DID - Mark Barta,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5073,KRC KST Turret DID - Andy Krebs,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5697,KRC KST Turret DID - Andy Steeves,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5543,KRC KST Turret DID - Brian Koehn,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+6386,KRC KST Turret DID - Matt Wolcott,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5952,KRC KST Turret DID - Energy Line,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5020,KRC KST Turret DID - Jayme Medina,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5619,KRC KST Turret DID - Troy Rossi,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5921,KRC KST Turret DID - Internal Hotline,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5103,KRC KST Turret DID - Sean Smith - AUSTIN,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+7998,KRC KST Turret DID - Kellen Locke,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5131,KRC KST Turret DID - Rick Sawyer,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5055,KRC KST Turret DID - Kyle Cummings,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5143,KRC KST Turret DID - Jason Vogler,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+5105,Stacy Connolly CFW to NY,Cluster-PT,US-LD-RL,,916464000000,,,Off,f,f,NULL
+5227,KRC KST Turret DID - Frank King,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+6387,KRC KST Turret DID - Omead Adib,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+9.011870XXXXXXXXX,USA International Route Pattern,US-PSTN-PT,US-LD-RL,,,,,Off,f,f,NULL
+5179,KRC KST Turret DID Charlie Weldon,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
+9.0118816XXXXXXXX,USA International Route Pattern,US-PSTN-PT,US-LD-RL,,,,,Off,f,f,NULL
+9.01188216XXXXXXXX,USA International Route Pattern,US-PSTN-PT,US-LD-RL,,,,,Off,f,f,NULL
+5715,KRC KST Turret DID - Andrew Shin,Cluster-PT,KRC-KST-HOU-BT-P31-RL,,,,,Off,f,f,NULL
