@@ -1,10 +1,8 @@
 require 'savon'
-require 'csv'
 require 'json'
 
 require_relative 'config'
 
-path = 'routepatterns.csv'
 uuid = Array.new
 
 client = Savon.client(
@@ -27,6 +25,7 @@ client = Savon.client(
     response = client.call(:list_route_pattern) do 
       message params
     end
+    puts response
     response.body[:list_route_pattern_response][:return][:route_pattern].each do |r|
       uuid << r[:@uuid]
       puts uuid
