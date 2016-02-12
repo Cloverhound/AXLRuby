@@ -23,10 +23,12 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 	searchcriteria = node['name']
 	puts listname.underscore + ' ' + searchcriteria
 
-	
 
-	params = { searchCriteria: {
-		name: '%'
+
+	params = { returnedTags: {
+		uuid: ''
+	}, searchCriteria: {
+		searchcriteria.to_sym => '%'
 	}}
 
 	begin
@@ -35,10 +37,16 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 			message params
 		end
 		puts response
-		response.body[listname.underscore.gsub('_req', '').concat("_response").to_sym][:return][listname.underscore.gsub('list_', '').gsub('_req', '').to_sym].each do |r|
-			uuid << r[:@uuid]
-			puts uuid
+		begin
+			response.body[listname.underscore.gsub('_req', '').concat("_response").to_sym][:return][listname.underscore.gsub('list_', '').gsub('_req', '').to_sym].each do |r|
+				uuid << r[:@uuid]
+				puts uuid
+			end
+		#rescue
+			puts "RESCUED"
 		end
+	#rescue
+		puts "RESCUED AGAIN"
 	end
 
 
