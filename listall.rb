@@ -1,11 +1,9 @@
 require 'nokogiri'
 require 'rails'
-
 require 'savon'
 require 'json'
 
 require_relative 'config'
-
 
 client = Savon.client(
 wsdl: "lib/axl/#{VERSION}/AXLAPI.wsdl",
@@ -19,34 +17,37 @@ doc = Nokogiri::XML(File.open("lib/axl/#{VERSION}/AXLSoap.xsd"))
 
 doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:element[@name='searchCriteria']//xsd:complexType//xsd:sequence//xsd:element[@name]").each do |node|
 
-	listname = node.parent.parent.parent.parent.parent['name']
-	searchcriteria = node['name']
-	puts listname.underscore + ' ' + searchcriteria
-
-
+	listname = node.parent.parent.parent.parent.parent['name'] # List name from XSD (e.g. "ListSipProfileReq")
+	searchcriteria = node['name'] # Used for searchCriteria in listname request (e.g. "name")
+	listnamesimple = listname.underscore.gsub('_req', '') # List name in underscore format without _req (e.g. "list_sip_profile")
+	listnameresponse = listname.underscore.gsub('_req', '').concat("_response") # Match list response header (e.g. list_sip_profile_response)
+	itemnamesimple = listname.underscore.gsub('list_', '').gsub('_req', '') # Just the item name (e.g. "sip_profile")
+	getnamesimple = listname.underscore.gsub('list_', 'get_').gsub('_req', '') # Get item name (e.g. get_sip_profile")
+	getnameresponse = listname.underscore.gsub('list_', 'get_').gsub('_req', '_response') # Get item with response (e.g. "get_sip_profile_response")
 
 	params = { returnedTags: {
 		uuid: ''
-	}, searchCriteria: {
+	},searchCriteria: {
 		searchcriteria.to_sym => '%'
 	}}
 
 	begin
 		uuid = Array.new
-		response = client.call(listname.underscore.gsub('_req', '').to_sym) do
+		response = client.call(listnamesimple.to_sym) do
 			message params
 		end
-		puts response
 		begin
-			response.body[listname.underscore.gsub('_req', '').concat("_response").to_sym][:return][listname.underscore.gsub('list_', '').gsub('_req', '').to_sym].each do |r|
+			response.body[listnameresponse.to_sym][:return][itemnamesimple.to_sym].each do |r|
 				uuid << r[:@uuid]
-				puts uuid
+				#	puts uuid
 			end
-		#rescue
-			puts "RESCUED"
+		rescue
+			puts "RESCUED RESPONSE BODY" + ' ' + listname
+			puts response.body
 		end
-	#rescue
-		puts "RESCUED AGAIN"
+	rescue
+		puts "RESCUED REQUEST CALL" + ' ' + listname + ' ' + searchcriteria
+		puts response
 	end
 
 
@@ -57,13 +58,15 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		}
 
 		begin
-			responselist = client.call(listname.underscore.gsub('list_', 'get_').gsub('_req', '').to_sym) do
+			responselist = client.call(getnamesimple.to_sym) do
 				message paramlist
 			end
-			puts responselist
+		rescue
+			puts "RESCUED GET CALL" + ' ' + getnamesimple + ' ' + u
+			puts paramlist
 		end
 
-		puts responselist.body[listname.underscore.gsub('list_', 'get_').gsub('_req', '_response').to_sym][:return].to_json
+		#puts responselist.body[getnameresponse.to_sym][:return].to_json
 
 	end
 
