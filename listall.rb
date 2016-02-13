@@ -31,6 +31,14 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		searchcriteria.to_sym => '%'
 	}}
 
+
+=begin Without returnedTags
+
+params = { searchCriteria: {
+		searchcriteria.to_sym => '%'
+	}}
+=end
+
 	begin
 		uuid = Array.new
 		response = client.call(listnamesimple.to_sym) do
@@ -47,7 +55,6 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		end
 	rescue
 		puts "RESCUED REQUEST CALL" + ' ' + listname + ' ' + searchcriteria
-		puts response
 	end
 
 
