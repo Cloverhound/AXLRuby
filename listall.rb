@@ -15,7 +15,7 @@ ssl_verify_mode: :none)
 
 doc = Nokogiri::XML(File.open("lib/axl/#{VERSION}/AXLSoap.xsd"))
 
-doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:element[@name='searchCriteria']//xsd:complexType//xsd:sequence//xsd:element[@name]").each do |node|
+doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:element[@name='searchCriteria']//xsd:complexType//xsd:sequence//xsd:element[@name][1]").each do |node|
 
 	listname = node.parent.parent.parent.parent.parent['name'] # List name from XSD (e.g. "ListSipProfileReq")
 	searchcriteria = node['name'] # Used for searchCriteria in listname request (e.g. "name")
@@ -32,13 +32,6 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 	}}
 
 
-=begin Without returnedTags
-
-params = { searchCriteria: {
-		searchcriteria.to_sym => '%'
-	}}
-=end
-
 	begin
 		uuid = Array.new
 		response = client.call(listnamesimple.to_sym) do
@@ -50,11 +43,15 @@ params = { searchCriteria: {
 				#	puts uuid
 			end
 		rescue
-			puts "RESCUED RESPONSE BODY" + ' ' + listname
+			puts "NO " + listname + " FOUND"
 			puts response.body
 		end
 	rescue
-		puts "RESCUED REQUEST CALL" + ' ' + listname + ' ' + searchcriteria
+		puts "RESCUED REQUEST CALL" + ' ' + itemnamesimple + ' ' + searchcriteria
+		params = { searchCriteria: {
+			searchcriteria.to_sym => '%'
+		}}
+		retry
 	end
 
 
@@ -67,14 +64,15 @@ params = { searchCriteria: {
 		begin
 			responselist = client.call(getnamesimple.to_sym) do
 				message paramlist
+			rescue "RESCUE GET CLIENT CALL"
 			end
 		rescue
 			puts "RESCUED GET CALL" + ' ' + getnamesimple + ' ' + u
 			puts paramlist
 		end
 
-		#puts responselist.body[getnameresponse.to_sym][:return].to_json
-
+		puts responselist.body[getnameresponse.to_sym][:return].to_json
+	rescue "RESCUE GET RESPONSE BODY"
 	end
 
 end
