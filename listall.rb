@@ -33,43 +33,50 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		searchcriteria.to_sym => '%'
 	}}
 
-	begin
-		uuid = Array.new
-		response = client.call(listnamesimple.to_sym) do
-			message params
-		end
-		begin
-			response.body[listnameresponse.to_sym][:return][itemnamesimple.to_sym].each do |r| # puts each UUID into an array
-				uuid << r[:@uuid]
-			end
-		rescue
-			puts "NO " + listname + " FOUND"
-			puts response.body
-		end
-	rescue # some list commands won't work with the returnedTags, this retries the command without them
-		puts "RESCUED REQUEST CALL" + ' ' + itemnamesimple + ' ' + searchcriteria
-		params = { searchCriteria: {
-			searchcriteria.to_sym => '%'
-		}}
-		retry
-	end
+	unless "ldap_sync_custom_field" == itemnamesimple.to_s
 
-	responseoptions.each do |existsget|
-		if getnamesimple.to_s == existsget.to_s # checks to see if get command exists for related list command
-			uuid.each do |u|
-				paramlist = {
-					uuid: u
-				}
-				begin
-					responselist = client.call(getnamesimple.to_sym) do
-						message paramlist
-					end
-				rescue
-					puts "RESCUED GET CALL" + ' ' + getnamesimple + ' ' + u
-					puts responselist.to_s
-					puts paramlist
+		begin
+			uuid = Array.new
+			#name = Array.new
+			response = client.call(listnamesimple.to_sym) do
+				message params
+			end
+			begin
+				response.body[listnameresponse.to_sym][:return][itemnamesimple.to_sym].each do |r| # puts each UUID into an array
+					uuid << r[:@uuid]
+					#	name << r[:@name]
 				end
-				puts responselist.body[getnameresponse.to_sym][:return].to_json # converts get response to JSON
+			rescue
+				puts "NO " + listname + " FOUND"
+				puts response.body
+			end
+		rescue # some list commands won't work with the returnedTags, this retries the command without them
+			puts "RESCUED REQUEST CALL" + ' ' + itemnamesimple + ' ' + searchcriteria
+			params = { searchCriteria: {
+				searchcriteria.to_sym => '%'
+			}}
+			retry
+		end
+
+		unless "get_universal_device_template" == getnamesimple.to_s
+			responseoptions.each do |existsget|
+				if getnamesimple.to_s == existsget.to_s # checks to see if get command exists for related list command
+					uuid.each do |u|
+						paramlist = {
+							uuid: u
+						}
+						begin
+							responselist = client.call(getnamesimple.to_sym) do
+								message paramlist
+							end
+						rescue
+							puts "RESCUED GET CALL" + ' ' + getnamesimple + ' ' + u
+							puts responselist.to_s
+							puts paramlist
+						end
+						puts responselist.body[getnameresponse.to_sym][:return].to_json # converts get response to JSON
+					end
+				end
 			end
 		end
 	end
