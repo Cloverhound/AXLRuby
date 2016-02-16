@@ -10,14 +10,8 @@ basic_auth: [USERNAME, PASSWORD],
 headers: {'Content-Type' => 'text/xml; charset=utf-8'},
 ssl_verify_mode: :none)
 
-testget = "get_billing_server"
 
 response = client.operations
 
-# puts response
+puts response
 
-response.each do |existsget|
-	if testget == existsget
-		puts "exists"
-	end
-end

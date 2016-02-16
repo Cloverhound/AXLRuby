@@ -3,7 +3,7 @@ require 'rails'
 require 'savon'
 require 'json'
 
-require_relative 'config'
+require_relative 'config' # CUCM IP, username, password, version
 
 client = Savon.client(
 wsdl: "lib/axl/#{VERSION}/AXLAPI.wsdl",
@@ -13,9 +13,11 @@ basic_auth: [USERNAME, PASSWORD],
 headers: {'Content-Type' => 'text/xml; charset=utf-8'},
 ssl_verify_mode: :none)
 
-doc = Nokogiri::XML(File.open("lib/axl/#{VERSION}/AXLSoap.xsd"))
+responseoptions = client.operations # lists possible commands from namespace
 
-doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:element[@name='searchCriteria']//xsd:complexType//xsd:sequence//xsd:element[@name][1]").each do |node|
+doc = Nokogiri::XML(File.open("lib/axl/#{VERSION}/AXLSoap.xsd")) # opens XSD file to search namespace
+
+doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:element[@name='searchCriteria']//xsd:complexType//xsd:sequence//xsd:element[@name][1]").each do |node| # find all searchCriteria elements
 
 	listname = node.parent.parent.parent.parent.parent['name'] # List name from XSD (e.g. "ListSipProfileReq")
 	searchcriteria = node['name'] # Used for searchCriteria in listname request (e.g. "name")
@@ -31,22 +33,20 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		searchcriteria.to_sym => '%'
 	}}
 
-
 	begin
 		uuid = Array.new
 		response = client.call(listnamesimple.to_sym) do
 			message params
 		end
 		begin
-			response.body[listnameresponse.to_sym][:return][itemnamesimple.to_sym].each do |r|
+			response.body[listnameresponse.to_sym][:return][itemnamesimple.to_sym].each do |r| # puts each UUID into an array
 				uuid << r[:@uuid]
-				#	puts uuid
 			end
 		rescue
 			puts "NO " + listname + " FOUND"
 			puts response.body
 		end
-	rescue
+	rescue # some list commands won't work with the returnedTags, this retries the command without them
 		puts "RESCUED REQUEST CALL" + ' ' + itemnamesimple + ' ' + searchcriteria
 		params = { searchCriteria: {
 			searchcriteria.to_sym => '%'
@@ -54,25 +54,23 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		retry
 	end
 
-
-	uuid.each do |u|
-
-		paramlist = {
-			uuid: u
-		}
-
-		begin
-			responselist = client.call(getnamesimple.to_sym) do
-				message paramlist
-			rescue "RESCUE GET CLIENT CALL"
+	responseoptions.each do |existsget|
+		if getnamesimple.to_s == existsget.to_s # checks to see if get command exists for related list command
+			uuid.each do |u|
+				paramlist = {
+					uuid: u
+				}
+				begin
+					responselist = client.call(getnamesimple.to_sym) do
+						message paramlist
+					end
+				rescue
+					puts "RESCUED GET CALL" + ' ' + getnamesimple + ' ' + u
+					puts responselist.to_s
+					puts paramlist
+				end
+				puts responselist.body[getnameresponse.to_sym][:return].to_json # converts get response to JSON
 			end
-		rescue
-			puts "RESCUED GET CALL" + ' ' + getnamesimple + ' ' + u
-			puts paramlist
 		end
-
-		puts responselist.body[getnameresponse.to_sym][:return].to_json
-	rescue "RESCUE GET RESPONSE BODY"
 	end
-
 end
