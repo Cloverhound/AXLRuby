@@ -17,7 +17,7 @@ responseoptions = client.operations # lists possible commands from namespace
 
 doc = Nokogiri::XML(File.open("lib/axl/#{VERSION}/AXLSoap.xsd")) # opens XSD file to search namespace
 
-doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:element[@name='searchCriteria']//xsd:complexType//xsd:sequence//xsd:element[@name][1]").each do |node| # find all searchCriteria elements
+doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:element[@name='searchCriteria']//xsd:complexType//xsd:sequence//xsd:element[@name]").each do |node| # find all searchCriteria elements. this is inefficient as shit, probably needs to look for the list command and then find the searchCriteria from there instead. ends up looking for the same thing multiple times.
 
 	listname = node.parent.parent.parent.parent.parent['name'] # List name from XSD (e.g. "ListSipProfileReq")
 	searchcriteria = node['name'] # Used for searchCriteria in listname request (e.g. "name")
@@ -33,7 +33,10 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		searchcriteria.to_sym => '%'
 	}}
 
-	unless "ldap_sync_custom_field" == itemnamesimple.to_s
+	puts "searching " + itemnamesimple + "criteria " + searchcriteria
+
+	unless "ldap_sync_custom_field" == itemnamesimple.to_s || "call_pickup_group" == itemnamesimple.to_s
+
 
 		begin
 			uuid = Array.new
@@ -44,7 +47,6 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 			begin
 				response.body[listnameresponse.to_sym][:return][itemnamesimple.to_sym].each do |r| # puts each UUID into an array
 					uuid << r[:@uuid]
-					#	name << r[:@name]
 				end
 			rescue
 				puts "NO " + listname + " FOUND"
@@ -59,6 +61,7 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		end
 
 		unless "get_universal_device_template" == getnamesimple.to_s
+			
 			responseoptions.each do |existsget|
 				if getnamesimple.to_s == existsget.to_s # checks to see if get command exists for related list command
 					uuid.each do |u|
@@ -81,3 +84,4 @@ doc.xpath("//xsd:complexType[starts-with(@name,'List')]//xsd:sequence//xsd:eleme
 		end
 	end
 end
+puts "Finished!"
